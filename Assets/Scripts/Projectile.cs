@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bubble : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,7 +13,6 @@ public class Bubble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Destroy(gameObject, 5f);
     }
 
     private void OnCollisionEnter(Collision collision)

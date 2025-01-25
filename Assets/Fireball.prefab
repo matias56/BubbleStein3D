@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 4033121670772952511}
   - component: {fileID: -6072084099083451996}
   - component: {fileID: 6775627235552734596}
-  - component: {fileID: 7759877672091861078}
-  m_Layer: 3
-  m_Name: Bubble
-  m_TagString: Bubble
+  - component: {fileID: 3820728076563146549}
+  m_Layer: 8
+  m_Name: Fireball
+  m_TagString: Fire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4eefe0545a2cf3b418e51d12eee6789f, type: 2}
+  - {fileID: 2100000, guid: b0a4fab58a4999e46b5eaa5612025565, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -134,7 +134,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7759877672091861078
+--- !u!114 &3820728076563146549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

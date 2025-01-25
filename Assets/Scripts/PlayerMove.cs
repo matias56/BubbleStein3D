@@ -18,6 +18,8 @@ public class PlayerMove : MonoBehaviour
     private bool isWalking;
 
     public float momentumDamping = 5f;
+
+    public float life = 100;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,11 @@ public class PlayerMove : MonoBehaviour
 
 
         camAnim.SetBool("isWalking", isWalking);
+
+        if(life <= 0)
+        {
+            Time.timeScale = 0;
+        }
     }
 
     
@@ -64,5 +71,21 @@ public class PlayerMove : MonoBehaviour
 
 
         movementVector = (inputVector * speed) + (Vector3.up * gravity);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Fire"))
+        {
+            life -= 10;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Exit"))
+        {
+            Time.timeScale = 0;
+        }
     }
 }
