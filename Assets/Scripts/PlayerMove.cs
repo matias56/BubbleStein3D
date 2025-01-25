@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -20,6 +22,8 @@ public class PlayerMove : MonoBehaviour
     public float momentumDamping = 5f;
 
     public float life = 100;
+
+    [SerializeField] private Slider health;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +42,8 @@ public class PlayerMove : MonoBehaviour
 
         if(life <= 0)
         {
-            Time.timeScale = 0;
+            SceneManager.LoadScene("GameOver");
+
         }
     }
 
@@ -78,6 +83,7 @@ public class PlayerMove : MonoBehaviour
         if(collision.gameObject.CompareTag("Fire"))
         {
             life -= 10;
+            UpdateHealthBar(life, 100);
         }
     }
 
@@ -85,7 +91,12 @@ public class PlayerMove : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Exit"))
         {
-            Time.timeScale = 0;
+            SceneManager.LoadScene("Credits");
         }
+    }
+
+    public void UpdateHealthBar(float curValue, float maxVal)
+    {
+        health.value = curValue / maxVal;
     }
 }

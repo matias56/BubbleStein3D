@@ -5,8 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public Material hitMaterial; // Assign a different material in the Inspector
-    public Material originalMaterial;
+
     public bool isHit = false; // Flag to track if the enemy has been hit
 
     public NavMeshAgent agent;
@@ -28,43 +27,53 @@ public class Enemy : MonoBehaviour
     public GameObject fireBall;
 
     public float timer = 5f;
+
+    public Animator spriteAnim;
     void Awake()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
     }
 
+    private void Start()
+    {
+        player = FindObjectOfType<PlayerMove>().transform;
+    }
+
     private void Update()
     {
+        transform.LookAt(player);
+
+        spriteAnim.SetBool("isHit", isHit);
+
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatPlayer);
 
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatPlayer);
 
-        if(!playerInSightRange && !playerInAttackRange && !isHit)
+        if (!playerInSightRange && !playerInAttackRange && !isHit)
         {
             Patroling();
         }
 
-        if(playerInSightRange && !playerInAttackRange && !isHit)
+        if (playerInSightRange && !playerInAttackRange && !isHit)
         {
             ChasePlayer();
         }
 
-        if(playerInSightRange && playerInAttackRange && !isHit)
+        if (playerInSightRange && playerInAttackRange && !isHit)
         {
             AttackPlayer();
         }
 
         if (isHit)
         {
-            
+
 
             timer -= Time.deltaTime;
 
-            if(timer <= 0)
+            if (timer <= 0)
             {
                 isHit = false;
-                GetComponent<Renderer>().material = originalMaterial;
                 timer = 5;
             }
         }
@@ -72,19 +81,19 @@ public class Enemy : MonoBehaviour
 
     private void Patroling()
     {
-        if(!walkPointSet)
+        if (!walkPointSet)
         {
             SearchWalkPoint();
         }
 
-        if(walkPointSet)
+        if (walkPointSet)
         {
             agent.SetDestination(walkPoint);
         }
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
 
-        if(distanceToWalkPoint.magnitude < 1f)
+        if (distanceToWalkPoint.magnitude < 1f)
         {
             walkPointSet = false;
         }
@@ -97,7 +106,7 @@ public class Enemy : MonoBehaviour
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
-        if(Physics.Raycast(walkPoint, -transform.up, 2f, ground))
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, ground))
         {
             walkPointSet = true;
         }
@@ -114,7 +123,7 @@ public class Enemy : MonoBehaviour
 
         transform.LookAt(player);
 
-        if(!alreadyAttacked)
+        if (!alreadyAttacked)
         {
             Rigidbody rb = Instantiate(fireBall, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * 15f, ForceMode.Impulse);
@@ -133,19 +142,13 @@ public class Enemy : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bubble"))
         {
-            ChangeColor();
             isHit = true;
         }
 
         if (collision.gameObject.CompareTag("Player") && isHit)
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
     }
 
-    void ChangeColor()
-    {
-        // Change the enemy's material to the new material
-        GetComponent<Renderer>().material = hitMaterial;
-    }
 }
